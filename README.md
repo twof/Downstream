@@ -34,7 +34,7 @@ associations:
     - https://github.com/twof/Downstream/edit/main/README.md
 ```
 
-The hook is not capable of failing because it only exists to provide information. Given the above example, if `Associations.swift` was changed, output would look like this
+The hook is only capable of failing if a `downstream.yml` is invalid. Otherwise it only exists to provide information. Given the above example, if `Associations.swift` was changed, output would look like this
 
 ```
 $ git commit -am "bumped pre-commit hook"
