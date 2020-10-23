@@ -3,12 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		962F4848254265BA00180B36 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962F4847254265BA00180B36 /* main.swift */; };
-		962F48522542678500180B36 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 962F48512542678500180B36 /* Yams */; };
 		962F485525426BCA00180B36 /* Associations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962F485425426BCA00180B36 /* Associations.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,7 +35,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				962F48522542678500180B36 /* Yams in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +84,6 @@
 			);
 			name = Downstream;
 			packageProductDependencies = (
-				962F48512542678500180B36 /* Yams */,
 			);
 			productName = Downstream;
 			productReference = 962F4844254265BA00180B36 /* Downstream */;
@@ -116,7 +113,6 @@
 			);
 			mainGroup = 962F483B254265BA00180B36;
 			packageReferences = (
-				962F48502542678500180B36 /* XCRemoteSwiftPackageReference "Yams" */,
 			);
 			productRefGroup = 962F4845254265BA00180B36 /* Products */;
 			projectDirPath = "";
@@ -295,25 +291,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		962F48502542678500180B36 /* XCRemoteSwiftPackageReference "Yams" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jpsim/Yams.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		962F48512542678500180B36 /* Yams */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 962F48502542678500180B36 /* XCRemoteSwiftPackageReference "Yams" */;
-			productName = Yams;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 962F483C254265BA00180B36 /* Project object */;
 }

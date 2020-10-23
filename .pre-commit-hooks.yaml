@@ -1,0 +1,5 @@
+-   id: downstream
+    name: Downstream
+    description: Alerts the user to downstream dependencies of the files updated
+    entry: downstream
+    language: swift
