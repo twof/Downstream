@@ -1,6 +1,6 @@
 # Downstream
 
-A pre-commit hook to alert users when files they're changing may cause docs to be out of date.
+A pre-commit hook to alert users when files they're changing may cause docs to be out of date. Downstream is more or less a reverse dependency manager in that it's used to describe what relies on your code rather than what your code relies on.
 
 ### `pre-commit` Installation
 
