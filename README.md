@@ -2,6 +2,12 @@
 
 A pre-commit hook to alert users when files they're changing may cause docs to be out of date. Downstream is more or less a reverse dependency manager in that it's used to describe what relies on your code rather than what your code relies on.
 
+## Why?
+
+There's a pretty consistent problem accross orgs I've been in where people are hesitent to write docs, guides, etc because they're concerned that what they write will rapidly become out of date. This fear is legitimate, and out of date docs are a common problem.
+
+## Installation
+
 ### `pre-commit` Installation
 
 In your `.pre-commit-config.yaml` add the following
