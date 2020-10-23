@@ -19,12 +19,17 @@ let todos = fileList.flatMap { filePath -> [String] in
 //  print("parent", changedFile.parent?.path)
 //  print("yaml", try? changedFile.parent?.file(named: "downstream.yml").read())
 //  let associationsData = (try? changedFile.parent?.file(named: "downstream.yml").read() as? Data).flatMap { try? decoder.decode(AssociationsFile.self, from: $0) }
+//  print("associations", associationsData)
+  
   
   if
     let parent = changedFile.parent,
-    let downsteamYML = try? parent.file(named: "downstream.yml").read(),
-    let associationsFile = try? decoder.decode(AssociationsFile.self, from: downsteamYML)
+    let downsteamYML = try? parent.file(named: "downstream.yml").read()
   {
+    guard let associationsFile = try? decoder.decode(AssociationsFile.self, from: downsteamYML) else {
+      print("\(parent.path)downstream.yml could not be parsed")
+      exit(1)
+    }
     let fileName = changedFile.name
     let newTodos = associationsFile.associations[fileName] ?? []
     return newTodos.map {
@@ -40,3 +45,5 @@ if !todos.isEmpty {
     print($0)
   }
 }
+
+exit(0)
