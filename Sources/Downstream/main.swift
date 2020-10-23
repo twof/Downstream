@@ -27,7 +27,7 @@ let todos = fileList.flatMap { filePath -> [String] in
     let fileName = changedFile.name
     let newTodos = associationsFile.associations[fileName] ?? []
     return newTodos.map {
-      "Our records indicate that you may need to update the docs at \($0) because changes were made to  \(fileName)"
+      "Our records indicate that you may need to update the docs at \($0) because changes were made to \(fileName)"
     }
   }
   
