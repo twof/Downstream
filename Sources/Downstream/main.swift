@@ -17,7 +17,6 @@ let todos = fileList.flatMap { filePath -> [String] in
   
 //  print("filePath", filePath)
 //  print("parent", changedFile.parent?.path)
-//  print("yaml", try? changedFile.parent?.file(named: "downstream.yml").read())
   
   if
     let parent = changedFile.parent,
