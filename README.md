@@ -4,7 +4,7 @@ A pre-commit hook to alert users when files they're changing may cause docs to b
 
 ## Why?
 
-There's a pretty consistent problem accross orgs I've been in where people are hesitent to write docs, guides, etc because they're concerned that what they write will rapidly become out of date. This fear is legitimate, and out of date docs are a common problem.
+There's a pretty consistent problem accross orgs I've been in where people are hesitent to write docs, guides, etc because they're concerned that what they write will rapidly become out of date. This fear is legitimate, and out of date docs are a common problem. Letting people know what docs need to be updated upon file changes is a step towards solving this problem.
 
 ## Installation
 
