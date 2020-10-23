@@ -1,2 +1,3 @@
 associations:
-  main.swift: https://github.com/JohnSundell/Files/blob/master/Sources/Files.swift
+  main.swift:
+    - https://github.com/JohnSundell/Files/blob/master/Sources/Files.swift
