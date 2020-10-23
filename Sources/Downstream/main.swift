@@ -18,7 +18,6 @@ let todos = fileList.flatMap { filePath -> [String] in
 //  print("filePath", filePath)
 //  print("parent", changedFile.parent?.path)
 //  print("yaml", try? changedFile.parent?.file(named: "downstream.yml").read())
-//  let associationsData = (try? changedFile.parent?.file(named: "downstream.yml").read() as? Data).flatMap { try? decoder.decode(AssociationsFile.self, from: $0) }
   
   if
     let parent = changedFile.parent,
