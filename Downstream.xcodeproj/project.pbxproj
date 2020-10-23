@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		962F4848254265BA00180B36 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962F4847254265BA00180B36 /* main.swift */; };
+		962F48522542678500180B36 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 962F48512542678500180B36 /* Yams */; };
+		962F485525426BCA00180B36 /* Associations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962F485425426BCA00180B36 /* Associations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		962F4844254265BA00180B36 /* Downstream */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Downstream; sourceTree = BUILT_PRODUCTS_DIR; };
 		962F4847254265BA00180B36 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		962F484F254266E600180B36 /* testfile.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = testfile.yaml; sourceTree = "<group>"; };
+		962F485425426BCA00180B36 /* Associations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Associations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				962F48522542678500180B36 /* Yams in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +63,8 @@
 			isa = PBXGroup;
 			children = (
 				962F4847254265BA00180B36 /* main.swift */,
+				962F484F254266E600180B36 /* testfile.yaml */,
+				962F485425426BCA00180B36 /* Associations.swift */,
 			);
 			path = Downstream;
 			sourceTree = "<group>";
@@ -78,6 +85,9 @@
 			dependencies = (
 			);
 			name = Downstream;
+			packageProductDependencies = (
+				962F48512542678500180B36 /* Yams */,
+			);
 			productName = Downstream;
 			productReference = 962F4844254265BA00180B36 /* Downstream */;
 			productType = "com.apple.product-type.tool";
@@ -105,6 +115,9 @@
 				Base,
 			);
 			mainGroup = 962F483B254265BA00180B36;
+			packageReferences = (
+				962F48502542678500180B36 /* XCRemoteSwiftPackageReference "Yams" */,
+			);
 			productRefGroup = 962F4845254265BA00180B36 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -120,6 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				962F4848254265BA00180B36 /* main.swift in Sources */,
+				962F485525426BCA00180B36 /* Associations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +295,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		962F48502542678500180B36 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		962F48512542678500180B36 /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 962F48502542678500180B36 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 962F483C254265BA00180B36 /* Project object */;
 }

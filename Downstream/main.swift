@@ -5,7 +5,17 @@
 //  Created by Alex Reilly on 10/22/20.
 //
 
-import Foundation
+import Yams
 
-print("Hello, World!")
+let yaml = """
+associations:
+  name: Martin D'vloper
+  job: Developer
+  skill: Elite
+"""
+
+let decoder = YAMLDecoder()
+let associations = try! decoder.decode(AssociationsFile.self, from: yaml)
+
+print(associations)
 
