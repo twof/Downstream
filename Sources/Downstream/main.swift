@@ -27,7 +27,6 @@ let todos = fileList.flatMap { filePath -> [String] in
     let associationsFile = try? decoder.decode(AssociationsFile.self, from: downsteamYML)
   {
     let fileName = changedFile.name
-//    print("relativeFileName", fileName)
     let newTodos = associationsFile.associations[fileName] ?? []
     return newTodos.map {
       "Our records indicate that you may need to update the docs at \($0) because changes were made to  \(fileName)"
