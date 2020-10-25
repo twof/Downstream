@@ -19,7 +19,7 @@ jobs:
     - id: pre_commit_action
       uses: pre-commit/action@v2.0.0
       with:
-        extra_args: downstream --files ${{ steps.file_changes.outputs.files}}
+        extra_args: downstream --files ${{ steps.file_changes.outputs.files}}; echo "hello world"
     - uses: daohoangson/comment-on-github@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
