@@ -21,7 +21,12 @@ jobs:
       with:
         extra_args: downstream --files ${{ steps.file_changes.outputs.files }};
     - id: get_changes
-      run: echo "::set-output name=test::$(swift run downstream -o human ${{ steps.file_changes.outputs.files }})"
+      run: |
+        content="$(swift run downstream -o human ${{ steps.file_changes.outputs.files }})"
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=test::$content"
     - uses: daohoangson/comment-on-github@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
