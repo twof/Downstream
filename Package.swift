@@ -7,7 +7,8 @@ let package = Package(
     name: "downstream",
     dependencies: [
       .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
-      .package(url: "https://github.com/JohnSundell/Files", from: "4.0.0")
+      .package(url: "https://github.com/JohnSundell/Files", from: "4.0.0"),
+      .package(url: "https://github.com/apple/swift-argument-parser", from: "0.3.0"), 
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
