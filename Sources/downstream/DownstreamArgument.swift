@@ -13,6 +13,7 @@ import Yams
 enum OutputFormat: String, ExpressibleByArgument {
   case json
   case yaml
+  case list
   case humanFriendly = "human"
 }
 
@@ -66,6 +67,8 @@ struct DownstreamArgument: ParsableCommand {
       return jsonOutput(todos: todos)
     case .yaml:
       return yamlOutput(todos: todos)
+    case .list:
+      return listOutput(todos: todos)
     }
   }
   
@@ -98,5 +101,9 @@ struct DownstreamArgument: ParsableCommand {
     }
     
     return yamlString
+  }
+  
+  func listOutput(todos: [String: [String]]) -> String {
+    return Set(todos.values).map { $0.joined(separator: "\n") }.joined(separator: "\n")
   }
 }
