@@ -65,7 +65,7 @@ content="${content//'%'/'%25'}"
 content="${content//$'\n'/'%0A'}"
 content="${content//$'\r'/'%0D'}"
 ```
-are necessary due to (a bug in Github Actions)[https://github.community/t/set-output-truncates-multiline-strings/16852] that prevents multiple lines from being passed to `set-output`.
+are necessary due to [a bug in Github Actions](https://github.community/t/set-output-truncates-multiline-strings/16852) that prevents multiple lines from being passed to `set-output`.
 
 ### Project Structure
 
