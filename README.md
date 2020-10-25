@@ -15,7 +15,7 @@ In your `.pre-commit-config.yaml` add the following
 ```yaml
 repos:
 -   repo: https://github.com/twof/Downstream
-    rev: 0.0.7
+    rev: 0.1.0
     hooks:
     -   id: downstream
 ```
