@@ -15,7 +15,15 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "downstream",
-            dependencies: ["Yams", "Files"]),
+            dependencies: [
+              "Yams",
+              "Files",
+              .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ],
+            exclude: [
+              "downstream.yml"
+            ]
+        ),
         .testTarget(
             name: "DownstreamTests",
             dependencies: ["downstream"]),
