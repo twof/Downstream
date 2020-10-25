@@ -19,7 +19,8 @@ jobs:
     - uses: pre-commit/action@v2.0.0
       with:
         extra_args: downstream --files ${{ steps.file_changes.outputs.files}}
-    - uses: JoseThen/comment-pr@v1
-      with:
-        comment: 'This PR is the bees knees!'
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: daohoangson/comment-on-github@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body: "Check out this comment!"
