@@ -16,10 +16,19 @@ jobs:
       uses: trilom/file-changes-action@v1.2.3
       with:
         output: ' '
-    - uses: pre-commit/action@v2.0.0
+    - id: pre_commit_action
+      uses: pre-commit/action@v2.0.0
       with:
-        extra_args: downstream --files ${{ steps.file_changes.outputs.files}}
-    - uses: JoseThen/comment-pr@v1
-      with:
-        comment: 'This PR is the bees knees!'
+        extra_args: downstream --files ${{ steps.file_changes.outputs.files }};
+    - id: get_changes
+      run: |
+        content="$(swift run downstream -o human ${{ steps.file_changes.outputs.files }})"
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=test::$content"
+    - uses: daohoangson/comment-on-github@v2
+      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        body: ${{ steps.get_changes.outputs.test }}
