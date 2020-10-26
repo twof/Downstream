@@ -49,12 +49,12 @@ jobs:
         content="${content//'%'/'%25'}"
         content="${content//$'\n'/'%0A'}"
         content="${content//$'\r'/'%0D'}"
-        echo "::set-output name=test::$content"
+        echo "::set-output name=content::$content"
     - uses: daohoangson/comment-on-github@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        body: ${{ steps.get_changes.outputs.test }}
+        body: ${{ steps.get_changes.outputs.content }}
 ```
 
 For some background, `file_changes` records a list of files that have been changed in this PR to `steps.file_changes.outputs.files`. It's basically the equivalent of `git diff --name-only`. 
@@ -83,7 +83,7 @@ associations:
   main.swift:
     - https://github.com/JohnSundell/Files/blob/master/Sources/Files.swift
     - https://github.com/twof/Downstream/edit/main/README.md
-  Associations.swift
+  Associations.swift:
     - https://github.com/twof/Downstream/edit/main/README.md
 ```
 
