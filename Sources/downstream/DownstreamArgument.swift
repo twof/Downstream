@@ -1,13 +1,5 @@
-//
-//  File.swift
-//  
-//
-//  Created by Alex Reilly on 10/24/20.
-//
-
 import ArgumentParser
 import Foundation
-import Files
 import Yams
 
 enum OutputFormat: String, ExpressibleByArgument {
@@ -17,39 +9,65 @@ enum OutputFormat: String, ExpressibleByArgument {
   case humanFriendly = "human"
 }
 
+typealias TodoList = [String: [String]]
+
+extension TodoList {
+    func matches(_ filename: String) -> [String] {
+        let results = [self["*"], self[filename]].compactMap { $0 }.flatMap { $0 }
+        return results
+    }
+}
+
 struct DownstreamArgument: ParsableCommand {
   @Option(name: .shortAndLong, help: "The format of the output")
-  var outputFormat: OutputFormat?
+  var outputFormat: OutputFormat = .humanFriendly
   
   @Argument(help: "Input files")
-  var files: [String]
-  
+  var files: [String] = []
+
   mutating func run() throws {
-    let todoList = todos(fileList: self.files)
+    let todoList = try todos(fileList: self.files)
     let output = outputFactory(todos: todoList, format: outputFormat)
     
     print(output)
   }
-  
-  func todos(fileList: [String]) -> [String: [String]] {
-    let decoder = YAMLDecoder()
-    
-    return fileList.reduce(into: [String: [String]]()) { (result, filePath) in
-      let changedFile = try! File(path: filePath)
-      
-      if
-        let parent = changedFile.parent,
-        let downsteamYML = try? parent.file(named: "downstream.yml").read()
-      {
-        guard let associationsFile = try? decoder.decode(AssociationsFile.self, from: downsteamYML) else {
-          print("\(parent.path)downstream.yml could not be parsed")
-          DownstreamArgument.exit()
-        }
-        let fileName = changedFile.name
-        let newTodos = associationsFile.associations[fileName]
-        result[filePath] = newTodos
+
+  // Associations file is used in place of an actual file during tests
+  func todos(fileList: [String], associationsFiles: [String: AssociationsFile]?=nil) throws -> TodoList {
+    return try fileList.reduce(into: TodoList()) { (result, filePath) in
+      let parent = URL(fileURLWithPath: filePath).deletingLastPathComponent().path
+      let matches = try matches(forFile: filePath, associationsFile: associationsFiles?[parent])
+      if !matches.isEmpty {
+        result[filePath] = matches
       }
     }
+  }
+
+  func matches(forFile path: String, associationsFile: AssociationsFile?=nil) throws -> [String] {
+    let decoder = YAMLDecoder()
+
+    if let associationsFile = associationsFile {
+      let changedFile = URL(fileURLWithPath: path)
+      return associationsFile.associations.matches(changedFile.lastPathComponent)
+    } else {
+      // This path should be coming from git diff, so we expect it to be valid
+      let changedFile = URL(fileURLWithPath: path)
+      let parent = changedFile.deletingLastPathComponent()
+      let downstreamYML = parent.appendingPathComponent("downstream.yml")
+
+      if
+        let contentData = FileManager.default.contents(atPath: downstreamYML.path),
+        let associations = String(data: contentData, encoding: .utf8)
+      {
+        guard let associationsFile = try? decoder.decode(AssociationsFile.self, from: associations) else {
+          throw ValidationError("\(parent.path)downstream.yml could not be parsed")
+        }
+        let fileName = changedFile.lastPathComponent
+        return associationsFile.associations.matches(fileName)
+      }
+    }
+
+    return []
   }
   
   /// Formats the todo list in the selected format type. Defaults to .humanFriendly if no format type is provided.
@@ -57,7 +75,7 @@ struct DownstreamArgument: ParsableCommand {
   ///   - todos: Todo list in the form of changed file -> associated tasks
   ///   - format: How the list ought to be formatted. Defaults to .humanFriendly if no format type is provided
   /// - Returns: Todo list formatted as desired.
-  func outputFactory(todos: [String: [String]], format: OutputFormat?) -> String {
+  func outputFactory(todos: TodoList, format: OutputFormat?) -> String {
     let format = format ?? .humanFriendly
     
     switch format {
@@ -72,13 +90,13 @@ struct DownstreamArgument: ParsableCommand {
     }
   }
   
-  func humanReadableOutput(todos: [String: [String]]) -> String {
+  func humanReadableOutput(todos: TodoList) -> String {
     return todos.map { (filePath, todos) in
       return "Due to changes made to \(filePath), you may need to make updates to the following: \n \(todos.joined(separator: "\n"))"
     }.joined(separator: "\n")
   }
   
-  func jsonOutput(todos: [String: [String]]) -> String {
+  func jsonOutput(todos: TodoList) -> String {
     let encoder = JSONEncoder()
     guard
       let jsonData = try? encoder.encode(todos),
@@ -91,7 +109,7 @@ struct DownstreamArgument: ParsableCommand {
     return jsonString
   }
   
-  func yamlOutput(todos: [String: [String]]) -> String {
+  func yamlOutput(todos: TodoList) -> String {
     let encoder = YAMLEncoder()
     guard
       let yamlString = try? encoder.encode(todos)
@@ -103,7 +121,7 @@ struct DownstreamArgument: ParsableCommand {
     return yamlString
   }
   
-  func listOutput(todos: [String: [String]]) -> String {
+  func listOutput(todos: TodoList) -> String {
     return Set(todos.values).map { $0.joined(separator: "\n") }.joined(separator: "\n")
   }
 }
