@@ -35,7 +35,10 @@ struct DownstreamArgument: ParsableCommand {
   // Associations file is used in place of an actual file during tests
   func todos(fileList: [String]) throws -> TodoList {
     return try fileList.reduce(into: TodoList()) { (result, filePath) in
-      result[filePath] = try matches(forFile: filePath)
+      let matches = try matches(forFile: filePath)
+      if !matches.isEmpty {
+        result[filePath] = matches
+      }
     }
   }
 
