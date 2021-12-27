@@ -1,10 +1,14 @@
 # Downstream
 
-A tool to alert users when files they're changing may cause docs to be out of date. Downstream is more or less a reverse dependency manager in that it's used to describe what relies on your code rather than what your code relies on.
+A tool to alert users when files they're changing may cause docs to be out of date. Downstream is more or less a 
+reverse dependency manager in that it's used to describe what relies on your code rather than what your code relies on.
 
 ## Why?
 
-There's a pretty consistent problem accross orgs I've been in where people are hesitent to write docs, guides, etc because they're concerned that what they write will rapidly become out of date. This fear is legitimate, and out of date docs are a common problem. Letting people know what docs need to be updated upon file changes is a step towards solving this problem.
+There's a pretty consistent problem accross orgs I've been in where people are hesitent to write docs, guides, etc 
+because they're concerned that what they write will rapidly become out of date. This fear is legitimate, and out of 
+date docs are a common problem. Letting people know what docs need to be updated upon file changes is a step towards 
+solving this problem.
 
 ## Installation
 
@@ -57,7 +61,8 @@ jobs:
         body: ${{ steps.get_changes.outputs.content }}
 ```
 
-For some background, `file_changes` records a list of files that have been changed in this PR to `steps.file_changes.outputs.files`. It's basically the equivalent of `git diff --name-only`. 
+For some background, `file_changes` records a list of files that have been changed in this PR to 
+`steps.file_changes.outputs.files`. It's basically the equivalent of `git diff --name-only`. 
 
 These lines
 ```
@@ -65,11 +70,13 @@ content="${content//'%'/'%25'}"
 content="${content//$'\n'/'%0A'}"
 content="${content//$'\r'/'%0D'}"
 ```
-are necessary due to [a bug in Github Actions](https://github.community/t/set-output-truncates-multiline-strings/16852) that prevents multiple lines from being passed to `set-output`.
+are necessary due to [a bug in Github Actions](https://github.community/t/set-output-truncates-multiline-strings/16852) 
+that prevents multiple lines from being passed to `set-output`.
 
 ### Project Structure
 
-You will need to put a file called `downstream.yml` in the directory with the file you'd like to attach documentation to.
+You will need to put a file called `downstream.yml` in the directory with the file you'd like to attach documentation 
+to.
 ```
 Sources/Downstream/
 ├── Associations.swift
@@ -77,7 +84,10 @@ Sources/Downstream/
 └── main.swift
 ```
 
-`downstream.yml` will need to contain a `[String: [String]]` dictionary where the keys are file names in that directory and values are links/paths/wherever users can find documentation that relies on that file.
+`downstream.yml` will need to contain a `[String: [String]]` dictionary where the keys are file names in that directory
+and values are links/paths/wherever users can find documentation that relies on that file. Anything under a "\*" will 
+work as an asociation for the entire directory.
+
 ```yaml
 associations:
   main.swift:
@@ -85,9 +95,12 @@ associations:
     - https://github.com/twof/Downstream/edit/main/README.md
   Associations.swift:
     - https://github.com/twof/Downstream/edit/main/README.md
+  *:
+    - https://docs.downstream.io/usage
 ```
 
-The hook is only capable of failing if a `downstream.yml` is invalid. Otherwise it only exists to provide information. Given the above example, if `Associations.swift` was changed, output would look like this
+The hook is only capable of failing if a `downstream.yml` is invalid. Otherwise it only exists to provide information. 
+Given the above example, if `Associations.swift` was changed, output would look like this
 
 ```
 $ git commit -am "bumped pre-commit hook"
@@ -104,7 +117,11 @@ https://github.com/twof/Downstream/blob/main/README.md
 
 ### Usage
 
-Beyond its usage as a pre-commit hook, Downstream can also be executed manually for integration with CI and whatnot like can be seen above with Github Actions. It can currently produce output based on the format requested by the user with the `-o` flag. Possible options are `human` for human friendly output like seen in the example above, `yaml`, `json`, and `list` which simply lists out all of the docs that may need updates in a format that's convenient for intake in a bash script.
+Beyond its usage as a pre-commit hook, Downstream can also be executed manually for integration with CI and whatnot like 
+can be seen above with Github Actions. It can currently produce output based on the format requested by the user with 
+the `-o` flag. Possible options are `human` for human friendly output like seen in the example above, `yaml`, `json`, 
+and `list` which simply lists out all of the docs that may need updates in a format that's convenient for intake in a 
+bash script.
 
 ```
 $ downstream -h

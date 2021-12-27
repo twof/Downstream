@@ -1,47 +1,31 @@
 import XCTest
 import class Foundation.Bundle
+@testable import downstream
+import ArgumentParser
 
 final class DownstreamTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
+  func testCatchall() throws {
+    let associations = AssociationsFile(associations: [
+      "main.swift": ["www.maindocs.com", "anotherPlaceToFindDocs"],
+      "unchangingFile.swift": ["www.unchangingDocs.edu"],
+      "*": ["www.wholeDirectoryDocs.net"]
+    ])
 
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
-        guard #available(macOS 10.13, *) else {
-            return
-        }
+    let downstreamArgument = DownstreamArgument(files: ["main.swift"])
 
-        let fooBinary = productsDirectory.appendingPathComponent("Downstream")
+    let todos = try downstreamArgument.matches(forFile: "main.swift", associationsFile: associations)
+    XCTAssertEqual(todos, ["www.wholeDirectoryDocs.net", "www.maindocs.com", "anotherPlaceToFindDocs"])
+  }
 
-        let process = Process()
-        process.executableURL = fooBinary
+  func testStandard() throws {
+    let associations = AssociationsFile(associations: [
+      "main.swift": ["www.maindocs.com", "anotherPlaceToFindDocs"],
+      "unchangingFile.swift": ["www.unchangingDocs.edu"],
+    ])
 
-        let pipe = Pipe()
-        process.standardOutput = pipe
+    let downstreamArgument = DownstreamArgument(files: ["main.swift"])
 
-        try process.run()
-        process.waitUntilExit()
-
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8)
-
-        XCTAssertEqual(output, "Hello, world!\n")
-    }
-
-    /// Returns path to the built products directory.
-    var productsDirectory: URL {
-      #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-      #else
-        return Bundle.main.bundleURL
-      #endif
-    }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+    let todos = try downstreamArgument.matches(forFile: "main.swift", associationsFile: associations)
+    XCTAssertEqual(todos, ["www.maindocs.com", "anotherPlaceToFindDocs"])
+  }
 }
