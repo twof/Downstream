@@ -1,6 +1,6 @@
 repos:
 - repo: .
-  rev: HEAD
+  rev: 8a0a3b129b0d87bdc046b68dddb1c29bd9f708d1
   hooks:
   - id: downstream
   - id: downstream-docker
