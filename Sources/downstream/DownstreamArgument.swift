@@ -1,6 +1,5 @@
 import ArgumentParser
 import Foundation
-import Files
 import Yams
 
 enum OutputFormat: String, ExpressibleByArgument {
@@ -17,10 +16,6 @@ extension TodoList {
         let results = [self["*"], self[filename]].compactMap { $0 }.flatMap { $0 }
         return results
     }
-}
-
-enum DownstreamError: Error {
-  case fileNotFound(path: String)
 }
 
 struct DownstreamArgument: ParsableCommand {
@@ -51,16 +46,18 @@ struct DownstreamArgument: ParsableCommand {
       return associationsFile.associations.matches(path)
     } else {
       // This path should be coming from git diff, so we expect it to be valid
-      let changedFile = try! File(path: path)
+      let changedFile = URL(fileURLWithPath: path)
+      let parent = changedFile.deletingLastPathComponent()
+      let downstreamYML = changedFile.appendingPathComponent("downstream.yml")
 
       if
-        let parent = changedFile.parent,
-        let downsteamYML = try? parent.file(named: "downstream.yml").read()
+        let contentData = FileManager.default.contents(atPath: downstreamYML.path),
+        let associations = String(data: contentData, encoding: .utf8)
       {
-        guard let associationsFile = try? decoder.decode(AssociationsFile.self, from: downsteamYML) else {
+        guard let associationsFile = try? decoder.decode(AssociationsFile.self, from: associations) else {
           throw ValidationError("\(parent.path)downstream.yml could not be parsed")
         }
-        let fileName = changedFile.name
+        let fileName = changedFile.lastPathComponent
         return associationsFile.associations.matches(fileName)
       }
     }
