@@ -11,18 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.4.0
-    - uses: actions/setup-python@v2
-    - id: file_changes
-      uses: trilom/file-changes-action@v1.2.4
       with:
-        output: ' '
+        fetch-depth: 0
+    - uses: actions/setup-python@v2
+    - name: Get changed files
+      id: changes
+      # Set outputs using the command.
+      run: |
+        echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+        echo "::set-output name=ts::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .ts$ | xargs)"
     - id: pre_commit_action
       uses: pre-commit/action@v2.0.3
       with:
-        extra_args: downstream --files ${{ steps.file_changes.outputs.files }};
+        extra_args: downstream --files ${{ steps.changes.outputs.ts }};
     - id: get_changes
       run: |
-        content="$(swift run downstream -o human ${{ steps.file_changes.outputs.files }})"
+        content="$(swift run downstream -o human ${{ steps.changes.outputs.ts }})"
         content="${content//'%'/'%25'}"
         content="${content//$'\n'/'%0A'}"
         content="${content//$'\r'/'%0D'}"
