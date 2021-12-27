@@ -10,19 +10,22 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.4.0
+      with:
+        fetch-depth: 0
     - uses: actions/setup-python@v2
-    - id: file_changes
-      uses: trilom/file-changes-action@v1.2.3
-      with:
-        output: ' '
+    - name: Get changed files
+      id: changes
+      # Set outputs using the command.
+      run: |
+        echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
     - id: pre_commit_action
-      uses: pre-commit/action@v2.0.0
+      uses: pre-commit/action@v2.0.3
       with:
-        extra_args: downstream --files ${{ steps.file_changes.outputs.files }};
+        extra_args: --files ${{ steps.changes.outputs.all }}
     - id: get_changes
       run: |
-        content="$(swift run downstream -o human ${{ steps.file_changes.outputs.files }})"
+        content="$(swift run downstream -o human ${{ steps.changes.outputs.all }})"
         content="${content//'%'/'%25'}"
         content="${content//$'\n'/'%0A'}"
         content="${content//$'\r'/'%0D'}"

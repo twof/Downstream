@@ -19,10 +19,13 @@ In your `.pre-commit-config.yaml` add the following
 ```yaml
 repos:
 -   repo: https://github.com/twof/Downstream
-    rev: 0.1.0
+    rev: 0.3.0
     hooks:
     -   id: downstream
 ```
+
+Alternatively, if you would like to use Downstream on a system without Swift installed, you may use 
+`-   id: downstream-docker`. You will need to have Docker installed on that system.
 
 ### Github Actions Installation
 
