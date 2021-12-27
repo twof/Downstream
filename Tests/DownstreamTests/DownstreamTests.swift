@@ -28,4 +28,25 @@ final class DownstreamTests: XCTestCase {
     let todos = try downstreamArgument.matches(forFile: "main.swift", associationsFile: associations)
     XCTAssertEqual(todos, ["www.maindocs.com", "anotherPlaceToFindDocs"])
   }
+
+  func testMultipleInputFiles() throws {
+    let topAssociations = AssociationsFile(associations: [
+      "Package.swift": ["dependenciesDocs.com"]
+    ])
+
+    let sourceAssociations = AssociationsFile(associations: [
+      "main.swift": ["www.maindocs.com", "anotherPlaceToFindDocs"],
+      "unchangingFile.swift": ["www.unchangingDocs.edu"],
+    ])
+
+    let allAssociations = ["/": topAssociations, "/Source": sourceAssociations]
+
+    let downstreamArgument = DownstreamArgument()
+    let todos = try downstreamArgument.todos(fileList: ["/Source/main.swift", "/Package.swift"], associationsFiles: allAssociations)
+
+    XCTAssertEqual(todos, [
+      "/Source/main.swift": ["www.maindocs.com", "anotherPlaceToFindDocs"],
+      "/Package.swift": ["dependenciesDocs.com"]
+    ])
+  }
 }

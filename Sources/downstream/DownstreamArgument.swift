@@ -33,9 +33,10 @@ struct DownstreamArgument: ParsableCommand {
   }
 
   // Associations file is used in place of an actual file during tests
-  func todos(fileList: [String]) throws -> TodoList {
+  func todos(fileList: [String], associationsFiles: [String: AssociationsFile]?=nil) throws -> TodoList {
     return try fileList.reduce(into: TodoList()) { (result, filePath) in
-      let matches = try matches(forFile: filePath)
+      let parent = URL(fileURLWithPath: filePath).deletingLastPathComponent().path
+      let matches = try matches(forFile: filePath, associationsFile: associationsFiles?[parent])
       if !matches.isEmpty {
         result[filePath] = matches
       }
@@ -46,12 +47,13 @@ struct DownstreamArgument: ParsableCommand {
     let decoder = YAMLDecoder()
 
     if let associationsFile = associationsFile {
-      return associationsFile.associations.matches(path)
+      let changedFile = URL(fileURLWithPath: path)
+      return associationsFile.associations.matches(changedFile.lastPathComponent)
     } else {
       // This path should be coming from git diff, so we expect it to be valid
       let changedFile = URL(fileURLWithPath: path)
       let parent = changedFile.deletingLastPathComponent()
-      let downstreamYML = changedFile.appendingPathComponent("downstream.yml")
+      let downstreamYML = parent.appendingPathComponent("downstream.yml")
 
       if
         let contentData = FileManager.default.contents(atPath: downstreamYML.path),
