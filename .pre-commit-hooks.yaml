@@ -4,3 +4,10 @@
     entry: downstream
     language: swift
     verbose: true
+
+-   id: downstream-docker
+    name: DownstreamDocker
+    description: Alerts the user to downstream dependencies of the files updated
+    entry: downstream
+    language: docker
+    verbose: true
