@@ -4,3 +4,4 @@ repos:
   hooks:
   - id: downstream
   - id: downstream-docker
+  - id: downstream-docker-image

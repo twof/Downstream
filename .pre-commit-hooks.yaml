@@ -11,3 +11,9 @@
     entry: downstream
     language: docker
     verbose: true
+-   id: downstream-docker-image
+    name: DownstreamDockerImage
+    description: Alerts the user to downstream dependencies of the files updated
+    entry: https://hub.docker.com/r/twoffles/downstream:0.4.0
+    language: docker_image
+    verbose: true
