@@ -3,9 +3,4 @@ repos:
   rev: HEAD
   hooks:
   - id: downstream
-
-- repo: .
-  rev: HEAD
-  hooks:
-  - id: downstream
-  
+  - id: downstream-docker
