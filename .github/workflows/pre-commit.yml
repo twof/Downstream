@@ -23,9 +23,6 @@ jobs:
       uses: pre-commit/action@v2.0.3
       with:
         extra_args: downstream --files ${{ steps.changes.outputs.all }};
-    - id: pre_commit_action
-      uses: pre-commit/action@v2.0.3
-      with:
         extra_args: downstream-docker --files ${{ steps.changes.outputs.all }};
     - id: get_changes
       run: |
