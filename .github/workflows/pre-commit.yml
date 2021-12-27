@@ -21,7 +21,8 @@ jobs:
         echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
     - id: pre_commit_action
       uses: pre-commit/action@v2.0.3
-      extra_args: --files ${{ steps.changes.outputs.all }}
+      with:
+        extra_args: --files ${{ steps.changes.outputs.all }}
     - id: get_changes
       run: |
         content="$(swift run downstream -o human ${{ steps.changes.outputs.all }})"
