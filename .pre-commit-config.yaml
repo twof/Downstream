@@ -1,6 +1,7 @@
 repos:
 - repo: .
-  rev: 8a0a3b129b0d87bdc046b68dddb1c29bd9f708d1
+  rev: 623c6100b9b044f59431bbfef50ebfc540a0619e
   hooks:
   - id: downstream
   - id: downstream-docker
+  - id: downstream-docker-image
